@@ -1,10 +1,23 @@
-# @znemz/use-global-hook [![NPM version][npm-image]][npm-url] [![build status][travis-image]][travis-url] [![Test coverage][coveralls-image]][coveralls-url]
+# @znemz/use-global-hook
 
-Easy state management for react using hooks in less than 1kb.
+[![npm version](https://img.shields.io/npm/v/@znemz/use-global-hook.svg)](https://www.npmjs.com/package/@znemz/use-global-hook)
+[![build status](https://img.shields.io/travis/nmccready/use-global-hook.svg)](https://travis-ci.org/nmccready/use-global-hook)
+[![Test coverage](https://coveralls.io/repos/github/nmccready/use-global-hook/badge.svg)](https://coveralls.io/github/nmccready/use-global-hook?branch=master)
+[![GitHub stars](https://img.shields.io/github/stars/nmccready/use-global-hook.svg?style=social)](https://github.com/nmccready/use-global-hook)
 
----
+**Easy state management for React using hooks — less than 1KB.**
 
-## Minimal example:
+No Redux. No Context boilerplate. Just a hook that shares state across components.
+
+## Install
+
+```bash
+npm install @znemz/use-global-hook
+# or
+yarn add @znemz/use-global-hook
+```
+
+## Quick Start
 
 ```javascript
 import React from 'react';
@@ -27,10 +40,7 @@ const App = () => {
   const [globalState, globalActions] = useGlobal();
   return (
     <div>
-      <p>
-        counter:
-        {globalState.counter}
-      </p>
+      <p>counter: {globalState.counter}</p>
       <button type="button" onClick={() => globalActions.addToCounter(1)}>
         +1 to global
       </button>
@@ -41,42 +51,66 @@ const App = () => {
 export default App;
 ```
 
----
+## Live Examples
 
-## Complete examples:
+### [Several counters, one value](https://codesandbox.io/s/v6zz2nwow5)
 
-### [Several counters, one value](https://codesandbox.io/s/v6zz2nwow5 'CodeSandBox')
+Add as many counters as you want — they all share the same global value. Every time one counter increments, all counters re-render. The parent component won't render again.
 
-Add as many counters as you want, it will all share the same global value.
-Every time one counter add 1 to the global value, all counters will render.
-The parent component won't render again.
+### [Asynchronous ajax requests](https://codesandbox.io/s/wqvykj5497)
 
----
+Search GitHub repos by username. Handle the ajax request asynchronously with async/await. Update the requests counter on every search.
 
-### [Asynchronous ajax requests](https://codesandbox.io/s/wqvykj5497 'CodeSandBox')
+## Advanced Usage
 
-Search GitHub repos by username.
-Handle the ajax request asynchronously with async/await.
-Update the requests counter on every search.
+### [`setRef` vs `setState`](https://codepen.io/nmccready/pen/vYBgrGR)
 
-## [ setRef vs setState ](https://codepen.io/nmccready/pen/vYBgrGR)
+Sometimes you need to set a reference and wipe the state clean. Common use cases:
 
-Sometimes you just need to set a reference and wipe the state clean.
+- **Reset / wipe** — clear state without triggering re-renders
+- **Tracking DOM elements** — `ref={setRef}`
 
-There are many use cases:
+### Why React Injection?
 
-- reset / wipe
-- tracking dom elements `ref={setRef}`
+This library accepts React as a parameter, which allows:
 
-## Why do we allow React Injection?
+- Support for different React implementations
+- Use of alternative hook implementations (e.g. [reinspect](https://github.com/troch/reinspect) for Redux DevTools integration)
+- Testing with mock React objects
 
-- to support different React implementation
-- to allow different versions of useEffect, useState or other hooks
-  - say to allow inspection for redux-devtools see [reinspect](https://github.com/troch/reinspect) to debug your global hooks
+## API
 
-[npm-image]: https://img.shields.io/npm/v/@znemz/use-global-hook.svg
-[npm-url]: https://www.npmjs.com/package/@znemz/use-global-hook
-[travis-image]: https://img.shields.io/travis/nmccready/use-global-hook.svg
-[travis-url]: https://travis-ci.org/nmccready/use-global-hook
-[coveralls-image]: https://coveralls.io/repos/github/nmccready/use-global-hook/badge.svg
-[coveralls-url]: https://coveralls.io/github/nmccready/use-global-hook?branch=master
+### `useGlobalHook({ React, initialState, actions })`
+
+Returns a hook function that provides `[state, actions]` when called in a component.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `React` | object | Your React instance |
+| `initialState` | object | Initial global state |
+| `actions` | object | Action functions receiving `(store, ...args)` |
+
+### Store Methods
+
+| Method | Description |
+|--------|-------------|
+| `store.setState(newState)` | Merge new state and trigger re-renders |
+| `store.setRef(newRef)` | Set reference without triggering re-renders |
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## Sponsor
+
+If you find this project useful, consider [sponsoring @nmccready](https://github.com/sponsors/nmccready) to support ongoing maintenance and development. ❤️
+
+## License
+
+See [LICENSE](./LICENSE) for details.
