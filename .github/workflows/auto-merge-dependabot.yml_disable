@@ -1,0 +1,14 @@
+# need more confidence prior to this being rolled out
+name: Auto-merge Dependabot
+on: pull_request
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - uses: peter-evans/enable-pull-request-automerge@v8
+        with:
+          token: ${{ secrets.GH_TOKEN || github.token }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          merge-method: squash
