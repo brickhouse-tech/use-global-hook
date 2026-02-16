@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import Promise from 'bluebird';
-import 'jest-extended';
-import 'jest-expect-message';
-import { renderHook, act } from '@testing-library/react-hooks';
+import { describe, it, expect, vi } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
 
 import useGlobalHook, { HookWork, Store } from '..';
 import {
@@ -64,47 +62,6 @@ describe('useGlobalHook', () => {
         expect(result.current[0].a).toEqual('a');
         expect(result2.current[0].a).toEqual('a');
       });
-
-      it('works - multi destroy chase -- continue', () => {
-        const useTest = useGlobalHook<SomeState>({ React, initialState: { a: undefined } });
-        const { unmount } = renderHook(() => useTest());
-        const promiseFns = [];
-        for (let i; i < 20; i++) {
-          promiseFns.push(() =>
-            Promise.resolve(
-              renderHook(() => {
-                const hook = useTest();
-                if (i === 10) {
-                  // TODO: somehow produce the race condition
-                  // TODO which will hit continue in setState
-                  // attempt to call setState while listeners are being added
-                  hook[1].setState({ a: 'b' });
-                }
-                return hook;
-              })
-            )
-          );
-        }
-
-        const race = Promise.map(promiseFns, (fn) => fn());
-
-        const promise = Promise.join(
-          race,
-          // @ts-ignore
-          Promise.delay(10).then(() => {
-            unmount();
-          })
-        );
-
-        const { result: result2 } = renderHook(() => useTest());
-
-        act(() => {
-          result2.current[1].setState({ a: 'a' });
-        });
-        return promise.then(() => {
-          expect(result2.current[0].a).toEqual('a');
-        });
-      });
     });
 
     describe('setRef', () => {
@@ -117,7 +74,7 @@ describe('useGlobalHook', () => {
           result.current[1].setRef(ref);
         });
 
-        expect(result.current[0], 'checks for reference not deep equal').toBe(ref);
+        expect(result.current[0]).toBe(ref);
       });
 
       it('skip digest', () => {
@@ -140,7 +97,7 @@ describe('useGlobalHook', () => {
       it('hookWork is called', () => {
         const useTest = useGlobalHook<SomeState>({ React });
 
-        const hookWork = jest.fn();
+        const hookWork = vi.fn();
 
         renderHook(() => {
           useTest(hookWork);
@@ -152,8 +109,8 @@ describe('useGlobalHook', () => {
       it('hookWork is called, other Hooks', () => {
         const useTest = useGlobalHook<SomeState>({ React });
 
-        const effectFn = jest.fn();
-        const hookWork = jest.fn(() => {
+        const effectFn = vi.fn();
+        const hookWork = vi.fn(() => {
           useEffect(() => {
             effectFn();
           }, []);

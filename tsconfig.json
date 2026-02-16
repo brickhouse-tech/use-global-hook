@@ -2,17 +2,17 @@
   "compilerOptions": {
     "jsx": "react",
     "esModuleInterop": true,
-    "removeComments": false,
-    "noLib": false,
-    "emitDecoratorMetadata": true,
-    "noImplicitAny": false,
-    "module": "commonjs",
-    "target": "ES5",
-    "experimentalDecorators": true,
-    "sourceMap": false,
-    "declaration": true,
-    "noResolve": false,
+    "target": "ES2020",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "outDir": ".tmp"
-  }
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "lib",
+    "strict": false,
+    "noImplicitAny": false,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/test/**"]
 }
