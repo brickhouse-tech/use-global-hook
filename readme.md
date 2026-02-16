@@ -1,9 +1,8 @@
 # @znemz/use-global-hook
 
 [![npm version](https://img.shields.io/npm/v/@znemz/use-global-hook.svg)](https://www.npmjs.com/package/@znemz/use-global-hook)
-[![build status](https://img.shields.io/travis/nmccready/use-global-hook.svg)](https://travis-ci.org/nmccready/use-global-hook)
-[![Test coverage](https://coveralls.io/repos/github/nmccready/use-global-hook/badge.svg)](https://coveralls.io/github/nmccready/use-global-hook?branch=master)
-[![GitHub stars](https://img.shields.io/github/stars/nmccready/use-global-hook.svg?style=social)](https://github.com/nmccready/use-global-hook)
+[![tests](https://github.com/brickhouse-tech/use-global-hook/actions/workflows/tests.yml/badge.svg)](https://github.com/brickhouse-tech/use-global-hook/actions/workflows/tests.yml)
+[![GitHub stars](https://img.shields.io/github/stars/brickhouse-tech/use-global-hook.svg?style=social)](https://github.com/brickhouse-tech/use-global-hook)
 
 **Easy state management for React using hooks — less than 1KB.**
 
@@ -13,8 +12,6 @@ No Redux. No Context boilerplate. Just a hook that shares state across component
 
 ```bash
 npm install @znemz/use-global-hook
-# or
-yarn add @znemz/use-global-hook
 ```
 
 ## Quick Start
@@ -51,24 +48,27 @@ const App = () => {
 export default App;
 ```
 
-## Live Examples
-
-### [Several counters, one value](https://codesandbox.io/s/v6zz2nwow5)
-
-Add as many counters as you want — they all share the same global value. Every time one counter increments, all counters re-render. The parent component won't render again.
-
-### [Asynchronous ajax requests](https://codesandbox.io/s/wqvykj5497)
-
-Search GitHub repos by username. Handle the ajax request asynchronously with async/await. Update the requests counter on every search.
-
 ## Advanced Usage
 
-### [`setRef` vs `setState`](https://codepen.io/nmccready/pen/vYBgrGR)
+### `setRef` vs `setState`
 
 Sometimes you need to set a reference and wipe the state clean. Common use cases:
 
 - **Reset / wipe** — clear state without triggering re-renders
 - **Tracking DOM elements** — `ref={setRef}`
+
+```javascript
+const useGlobal = useGlobalHook({ React, initialState: { data: null } });
+
+// In a component:
+const [state, actions] = useGlobal();
+
+// setState merges (like React's setState)
+actions.setState({ data: { key: 'value' } });
+
+// setRef replaces the entire reference
+actions.setRef({ completely: 'new object' });
+```
 
 ### Why React Injection?
 
@@ -95,7 +95,7 @@ Returns a hook function that provides `[state, actions]` when called in a compon
 | Method | Description |
 |--------|-------------|
 | `store.setState(newState)` | Merge new state and trigger re-renders |
-| `store.setRef(newRef)` | Set reference without triggering re-renders |
+| `store.setRef(newRef)` | Replace state reference and trigger re-renders |
 
 ## Contributing
 
@@ -103,7 +103,7 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 1. Fork the repo
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes
+3. Commit your changes (using [conventional commits](https://www.conventionalcommits.org/))
 4. Push to the branch
 5. Open a Pull Request
 
