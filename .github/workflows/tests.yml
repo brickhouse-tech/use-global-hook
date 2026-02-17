@@ -1,5 +1,4 @@
 name: tests
-
 on:
   workflow_call:
   pull_request:
@@ -7,18 +6,8 @@ on:
     paths-ignore:
       - '.devcontainer/**'
       - '.github/workflows/**'
-
 jobs:
-  test:
-    strategy:
-      matrix:
-        node-version: ['20.x', '22.x', '24.x']
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
+  tests:
+    uses: brickhouse-tech/.github/.github/workflows/tests.yml@main
+    with:
+      build: true
