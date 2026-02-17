@@ -1,11 +1,10 @@
 name: tests
 on:
   workflow_call:
+  push:
+    branches: ["master"]
   pull_request:
     branches: ["master"]
-    paths-ignore:
-      - '.devcontainer/**'
-      - '.github/workflows/**'
 jobs:
   tests:
     uses: brickhouse-tech/.github/.github/workflows/tests.yml@main
