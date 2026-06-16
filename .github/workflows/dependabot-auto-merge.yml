@@ -9,4 +9,5 @@ permissions:
 jobs:
   dependabot:
     uses: brickhouse-tech/.github/.github/workflows/dependabot-auto-merge.yml@main
+    secrets: inherit
 
