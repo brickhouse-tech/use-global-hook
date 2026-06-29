@@ -4,9 +4,6 @@ on:
   workflow_call:
   pull_request:
     branches: ["master"]
-    paths-ignore:
-      - '.devcontainer/**'
-      - '.github/workflows/**'
 
 jobs:
   test:
