@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.20](https://github.com/brickhouse-tech/use-global-hook/compare/v1.1.19...v1.1.20) (2026-11-08)
+
 ## [1.1.19](https://github.com/brickhouse-tech/use-global-hook/compare/v1.1.18...v1.1.19) (2026-06-29)
 
 ## [1.1.18](https://github.com/brickhouse-tech/use-global-hook/compare/v1.1.17...v1.1.18) (2026-06-29)
